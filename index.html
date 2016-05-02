@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BioBots Admin Page</title>
+  <meta content="BioBots Job Application" name="description">
+  <meta content="Rahul Fakir" name="author">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel=
+  "stylesheet"><!--Import materialize.css-->
+  <link href="assets/css/materialize.min.css" media="screen,projection" rel=
+  "stylesheet" type="text/css">
+</head>
+<body style="background-color: #FAFAFA">
+  <!-- Header -->
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a class="brand-logo" href="#!" style="margin-left:1em">BioBots Data
+        Interaction Tool</a>
+        <ul class="right hide-on-med-and-down">
+          <li hidden="" id="dashboard_link">
+            <a onclick="display_dashboard()"><i class=
+            "material-icons left">dashboard</i>Dashboard</a>
+          </li>
+          <li hidden="" id="search_link">
+            <a onclick="display_individual_user()"><i class=
+            "material-icons left">person_outline</i>Users</a>
+          </li>
+          <li hidden="" id="logout_link">
+            <a onclick="logout()"><i class=
+            "material-icons left">done</i>Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div><!-- Dashboard -->
+  <div class="container">
+    <div class="row" hidden="" id="admin_dashboard">
+      <!--Heading-->
+      <div class="col s12">
+        <h1 id="display_type">Dashboard</h1>
+      </div><!-- Statistics -->
+      <div class="col s12" id="dashboard_stats">
+        <div class="col s3">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <h4 id="active_users">0000</h4>
+              <h5>active users</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <h4 id="active_machines">0000</h4>
+              <h5>active serials</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <h4 id="prints_per_user">0000</h4>
+              <h5>prints per user</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col s3">
+          <div class="card red darken-1">
+            <div class="card-content white-text">
+              <h4 id="total_prints">0000</h4>
+              <h5>total prints</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <h2>Print Data</h2>
+      </div>
+      <div class="col s6">
+        <div class="card medium" id="testcard">
+          <div id="print_data_chart"></div>
+        </div>
+      </div>
+      <div class="col s12 m6">
+        <div class="card blue-grey medium white-text">
+          <div class="row" style="padding: 15px 15px 15px 15px">
+            <div class="col s12">
+              <h5>Live Percent</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_median">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="lp_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s12">
+              <h5>Dead Percent</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_median">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dp_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s12">
+              <h5>Elasticity</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_median">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="ep_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <h2>Cross Linking</h2>
+      </div>
+      <div class="col s6">
+        <div class="card blue-grey white-text medium" id="testcard">
+          <div class="row" style="padding: 15px 15px 15px 15px">
+            <div class="col s12">
+              <h5>Duration</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dur_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dur_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dur_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dur_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="dur_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s12" style="margin-top: 2em">
+              <h5>Intensity</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="int_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="int_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="int_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="int_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="int_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="card medium" id="testcard">
+          <div id="cross_linking_2"></div>
+        </div>
+      </div>
+      <div class="col s12">
+        <div class="card medium" id="testcard">
+          <div id="cross_linking_1"></div>
+        </div>
+      </div>
+      <div class="col s12">
+        <h2>Extruder Pressure</h2>
+      </div>
+      <div class="col s6">
+        <div class="card medium" id="testcard">
+          <div id="extruder"></div>
+        </div>
+      </div>
+      <div class="col s6">
+        <div class="card blue-grey white-text medium" id="testcard">
+          <div class="row" style="padding: 15px 15px 15px 15px">
+            <div class="col s12">
+              <h5>Extruder 1</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e1_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e1_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e1_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e1_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e1_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s12" style="margin-top: 2em">
+              <h5>Extruder 2</h5>
+            </div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e2_max">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e2_min">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e2_total">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e2_average">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right" id="e2_std">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+            <div class="col s2" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s2 offset-s1" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s1" style="margin-top: -1em"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <h2>Print Layers</h2>
+      </div>
+      <div class="col s9">
+        <div class="card medium" id="testcard">
+          <div id="layers"></div>
+        </div>
+      </div>
+      <div class="col s3">
+        <div class="card blue-grey white-text medium" id="testcard">
+          <div class="row" style="padding: 15px 15px 15px 15px">
+            <div class="col s12">
+              <h5>Layer Height</h5>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_max">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_min">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_total">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_median">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_average">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="lh_std">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <h2>Wellplate Data</h2>
+      </div>
+      <div class="col s3">
+        <div class="card blue-grey white-text medium" id="testcard">
+          <div class="row" style="padding: 15px 15px 15px 15px">
+            <div class="col s12">
+              <h5>Wellplate</h5>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Max:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="wellpate_max">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Min:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="wellpate_min">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Total:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="wellpate_total">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Median:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>Average</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="wellpate_average">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>S-Dev</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right" id="wellpate_std">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>25-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>50-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+            <div class="col s8" style="margin-top: -1em">
+              <p>75-%:</p>
+            </div>
+            <div class="col s4" style="margin-top: -1em">
+              <p align="right">0%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s9">
+        <div class="card medium" id="testcard">
+          <div id="wellpate"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row" hidden="" id="admin_search">
+      <div class="col s12" style="margin-top:2em">
+        <div class="card">
+          <div class="card-content">
+            <input class="validate" id="user_search_box" type="text">
+            <label for="user_search_box">Filter using email</label>
+            <button class="btn waves-effect waves-light right red" onclick=
+            "validate_user()">Submit <i class=
+            "material-icons right">send</i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" hidden="" id="user_history">
+      <div class="col s12" style="margin-top:2em">
+        <h2>Print History</h2>
+      </div>
+      <div class="col s12" id="history_data" style="margin-top:2em"></div>
+    </div>
+    <div class="row" id="log_in" style="margin-top:5em">
+      <div class="col s6 offset-s3">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">Log In</span> <input id="email" type=
+            "text"> <label for="email">e-mail</label> <button class=
+            "btn waves-effect waves-light right red" name="action" onclick=
+            "login()" type="submit">Submit <i class=
+            "material-icons right">send</i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- Modal Structure -->
+  <div class="modal" id="modal1">
+    <div class="modal-content">
+      <h4>Alert</h4>
+      <p>The specified user does not exist! Please re-enter a valid user
+      email</p>
+    </div>
+    <div class="modal-footer">
+      <a class=" modal-action modal-close waves-effect waves-green btn-flat"
+      href="#!">Ok</a>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type=
+  "text/javascript">
+  </script> 
+  <script src="assets/js/materialize.min.js" type="text/javascript">
+  </script> 
+  <script src="assets/js/biobots.js" type="text/javascript">
+  </script> 
+  <script src="assets/js/canvasjs.min.js" type="text/javascript">
+  </script>
+</body>
+</html>
